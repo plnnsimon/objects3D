@@ -3,13 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>ThreeJS Starter</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Feel The Sphere</h1>
+    <style>
+        .info {
+                color: white;
+                height: 20px;
+                width: 370px;
+                display: block;
+                background-color: rgb(93, 93, 93);
+                border: solid 1px black;
+                padding: 5px;
+            }
+        .btn {
+            background-color: #A9A9A9;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+        }
+
+        .dropdown {
+            position: absolute;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #A9A9A9;
+            min-width: 80px;
+            z-index: 1;
+        }
+
+        .dropdown-content.btn:hover {background-color: #ffffff}
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .btn:hover, .dropdown:hover .btn {
+            background-color: #A9A9A9;
+        }
+        .button:hover {
+            color: #000000;
+        }
+                
+    </style>
+    <div style="margin: 20px;">
+        <button class="btn">Choose Geometry</button>
+        <div class="dropdown">
+        <button class="btn" style="border-left:1px solid navy">
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <button class="btn button" type="submit" id="sphere">Sphere</button>
+            <br>
+            <button class="btn button" type="submit" id="cube">Cube</button>
+            <br>
+            <button class="btn button" type="submit" id="cone">Cone</button>
+            </div>
+        </div>
+        <div style="margin-top: 10px; width: 400px;" id="div"></div>
+        <canvas class="webgl"></canvas>
+        
     </div>
-    <canvas class="webgl"></canvas>
-    <section></section>
+
+      
 </body>
 </html>

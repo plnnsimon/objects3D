@@ -1,84 +1,130 @@
-import './style.css'
+import './style.module.css';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
 
-const textureLoader = new THREE.TextureLoader();
-const normalTexture = textureLoader.load('/textures/NormalMap.png')
+// import * as dat from 'dat.gui'
 
-// Debug
-const gui = new dat.GUI()
+// // Debug
+// const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+scene.background = new THREE.Color( 0xC0C0C0 );
 
-// Objects
-const geometry = new THREE.SphereBufferGeometry( .5, 64, 64 );
-
-// Materials
-
-const material = new THREE.MeshStandardMaterial();
-material.metalness = 0.7;
-material.roughness = 0.2;
-material.normalMap = normalTexture;
-
-material.color = new THREE.Color(0x292929)
-
-// Mesh
-const sphere = new THREE.Mesh(geometry,material)
-scene.add(sphere)
+// GridHelper
+scene.add( new THREE.GridHelper(12,12) );
 
 // Lights
+const light = new THREE.DirectionalLight( 0xFFFFFF );
+light.position.set( 10, 10, 10 );
 
-const pointLight = new THREE.PointLight(0xffffff, 0.2)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
+const pointLight = new THREE.PointLight(0xffffff, .5)
+pointLight.position.x = 1
+pointLight.position.y = 2
+pointLight.position.z = 3
 scene.add(pointLight)
 
-const pointLight2 = new THREE.PointLight(0x9400D3, 2)
-pointLight2.position.set(-0.64, 1.03, 0.44);
-pointLight2.intensity = 7;
-
-scene.add(pointLight2);
-
-const light1 = gui.addFolder('light 1');
-
-light1.add(pointLight2.position, 'y').min(-3).max(3).step(0.01);
-light1.add(pointLight2.position, 'x').min(-6).max(6).step(0.01);
-light1.add(pointLight2.position, 'z').min(-3).max(3).step(0.01);
-light1.add(pointLight2, 'intensity').min(0).max(10).step(0.01);
-
-// const pointLightHelper = new THREE.PointLightHelper(pointLight2, 1);
-// scene.add(pointLightHelper);
-
-const pointLight3 = new THREE.PointLight(0x8eff, 2)
-pointLight3.position.set(2.70, -2.5, -1.5);
-pointLight3.intensity = 5;
-
-scene.add(pointLight3);
-const light2 = gui.addFolder('light 2');
-
-light2.add(pointLight3.position, 'y').min(-3).max(3).step(0.01);
-light2.add(pointLight3.position, 'x').min(-6).max(6).step(0.01);
-light2.add(pointLight3.position, 'z').min(-3).max(3).step(0.01);
-light2.add(pointLight3, 'intensity').min(0).max(10).step(0.01);
-
-const light2Color = {
-    color: 0xff0000
+let sphereButton = document.getElementById('sphere');
+function sphereFunc () {
+    const sphereGeometry = new THREE.SphereBufferGeometry( 1, 32, 64 );
+    const sphereMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, emissive: 0x708090, shininess: 0} );
+    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    sphere.position.x = Math.random() * -5;
+    sphere.position.y = Math.random() * 5;
+    sphere.position.z = Math.random() * 5;
+    scene.add( sphere );
+    let div = document.getElementById('div')
+    let info = document.createElement('div')
+    
+    info.innerHTML = sphere.uuid + ' Sphere';
+    let removeBtn = document.createElement('button')
+    removeBtn.innerHTML = 'Remove';
+    info.classList.add('info')
+    div.appendChild(info);
+    
+    console.log(sphere.uuid);
+    
+    div.appendChild(removeBtn)
+    
+    removeBtn.addEventListener('click', function () {
+        scene.remove(sphere)
+        info.remove();
+        removeBtn.remove()
+    }) 
 }
 
-light2.addColor(light2Color, 'color')
-    .onChange(() => {
-        pointLight3.color.set(light2Color.color)
-    })
+sphereButton.addEventListener('click', sphereFunc);
 
-// const pointLightHelper2 = new THREE.PointLightHelper(pointLight3, 1);
-// scene.add(pointLightHelper2);
+let cubeButton = document.getElementById('cube');
+function cubeFunc () {
+    const geometry = new THREE.BoxGeometry( 1, 1, 1);
+    const material = new THREE.MeshPhongMaterial( {color: 0xffffff, emissive: 0x708090, shininess: 0} );
+    const cube = new THREE.Mesh( geometry, material );
+    cube.position.x = Math.random() * 5;
+    cube.position.y = Math.random() * 5;
+    cube.position.z = Math.random() * 5;
+    scene.add( cube );
+    let div = document.getElementById('div')
+    let info = document.createElement('div')
+    
+    info.innerHTML = cube.uuid + ' Cube';
+    let removeBtn = document.createElement('button')
+    removeBtn.innerHTML = 'Remove';
+    info.classList.add('info')
+    div.appendChild(info);
+    
+    console.log(cube.uuid);
+    
+    div.appendChild(removeBtn)
+    
+    removeBtn.addEventListener('click', function () {
+        scene.remove(cube)
+        info.remove();
+        removeBtn.remove()
+    }) 
+}
 
+cubeButton.addEventListener('click', cubeFunc);
+
+let coneButton = document.getElementById('cone');
+function coneFunc () {
+    const coneGeometry = new THREE.ConeGeometry( 1.5, 4, 16 );
+    const coneMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, emissive: 0x708090, shininess: 0} );
+    const cone = new THREE.Mesh( coneGeometry, coneMaterial );
+
+    cone.position.x = Math.random() * 5;
+    cone.position.y = Math.random() * 5;
+    cone.position.z = Math.random() * -5;
+    cone.rotation.z = Math.random() * 5;
+    cone.rotation.x = Math.random() * 5;
+    cone.rotation.y = Math.random() * 5;
+    scene.add( cone );
+
+    let div = document.getElementById('div')
+    let info = document.createElement('div')
+    
+    info.innerHTML = cone.uuid + ' Cone';
+    let removeBtn = document.createElement('button')
+    removeBtn.innerHTML = 'Remove';
+    info.classList.add('info')
+    div.appendChild(info);
+    
+    console.log(cone.uuid);
+    
+    div.appendChild(removeBtn)
+    
+    removeBtn.addEventListener('click', function () {
+        scene.remove(cone)
+        info.remove();
+        removeBtn.remove()
+    }) 
+
+
+}
+coneButton.addEventListener('click', coneFunc);
 
 /**
  * Sizes
@@ -107,15 +153,15 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 0
-camera.position.z = 2
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.01, 1000)
+camera.position.x = 4
+camera.position.y = 5
+camera.position.z = 7
 scene.add(camera)
 
 // Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
 /**
  * Renderer
@@ -127,55 +173,14 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-/**
- * Animate
- */
-
-document.addEventListener('mousemove', onDocumentMouseMove);
-
-let mouseX = 0;
-let mouseY = 0;
-
-let targetX = 0;
-let targetY = 0;
-
-const windowHalfX = window.innerWidth / 2;
-const windowHalfY = window.innerHeight / 2;
-
-function onDocumentMouseMove (event) {
-    mouseX = (event.clientX - windowHalfX);
-    mouseY = (event.clientY - windowHalfY);
-}
-
-const updateSphere = (event) => {
-    sphere.position.y = window.scrollY * .001
-} 
-
-window.addEventListener('scroll', updateSphere);
-
 const clock = new THREE.Clock()
 
 const tick = () =>
 {
-    targetX = mouseX * 0.001;
-    targetY = mouseY * 0.001;
-
-    const elapsedTime = clock.getElapsedTime()
-
-    // Update objects
-    sphere.rotation.y = .5 * elapsedTime
-
-    sphere.rotation.y += .5 * (targetX - sphere.rotation.y);
-    sphere.rotation.x += .5 * (targetY - sphere.rotation.x);
-    sphere.position.z += .5 * (targetY - sphere.rotation.x);
-
-    // Update Orbital Controls
-    // controls.update()
-
-    // Render
+    
     renderer.render(scene, camera)
 
-    // Call tick again on the next frame
+    
     window.requestAnimationFrame(tick)
 }
 
