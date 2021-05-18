@@ -2,10 +2,12 @@ import './style.module.css';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-// import * as dat from 'dat.gui'
+import * as dat from 'dat.gui'
 
-// // Debug
-// const gui = new dat.GUI()
+// Debug
+
+
+
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -49,8 +51,15 @@ function sphereFunc () {
     
     div.appendChild(removeBtn)
     
+    const gui = new dat.GUI()
+    const sphereFolder = gui.addFolder("Sphere");
+    sphereFolder.add(sphere.scale, "x", 0, 2);
+    sphereFolder.add(sphere.scale, "y", 0, 2);
+    sphereFolder.add(sphere.scale, "z", 0, 2);
+
     removeBtn.addEventListener('click', function () {
         scene.remove(sphere)
+        gui.destroy();
         info.remove();
         removeBtn.remove()
     }) 
@@ -79,12 +88,21 @@ function cubeFunc () {
     console.log(cube.uuid);
     
     div.appendChild(removeBtn)
-    
+
+    const gui = new dat.GUI()
+    const cubeFolder = gui.addFolder("Cube");
+    cubeFolder.add(cube.scale, "x", 0, 2);
+    cubeFolder.add(cube.scale, "y", 0, 2);
+    cubeFolder.add(cube.scale, "z", 0, 2);
+
     removeBtn.addEventListener('click', function () {
         scene.remove(cube)
+        gui.destroy();
         info.remove();
-        removeBtn.remove()
+        removeBtn.remove();
     }) 
+
+    
 }
 
 cubeButton.addEventListener('click', cubeFunc);
@@ -116,8 +134,15 @@ function coneFunc () {
     
     div.appendChild(removeBtn)
     
+    const gui = new dat.GUI()
+    const coneFolder = gui.addFolder("Cone");
+    coneFolder.add(cone.scale, "x", 0, 2);
+    coneFolder.add(cone.scale, "y", 0, 2);
+    coneFolder.add(cone.scale, "z", 0, 2);
+
     removeBtn.addEventListener('click', function () {
         scene.remove(cone)
+        gui.destroy();
         info.remove();
         removeBtn.remove()
     }) 
@@ -125,6 +150,8 @@ function coneFunc () {
 
 }
 coneButton.addEventListener('click', coneFunc);
+
+
 
 /**
  * Sizes
